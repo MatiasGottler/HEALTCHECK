@@ -1,0 +1,141 @@
+import datetime
+
+def get_greeting():
+    """Returns a greeting based on the time of day."""
+    current_hour = datetime.datetime.now().hour
+    if 5 <= current_hour < 12:
+        return "Good morning"
+    elif 12 <= current_hour < 18:
+        return "Good afternoon"
+    else:
+        return "Good evening"
+
+def greet_user(name):
+    """Prints a personalized greeting for the user."""
+    greeting = get_greeting()
+    print(f"{greeting}, {name}!")
+
+def check_temperature(temperature):
+    """Checks the temperature and gives recommendations."""
+    if temperature < 32:
+        print("Your temperature is very low. You should see a doctor immediately.")
+        return False
+    elif temperature < 37:
+        print("Normal temperature")
+        print("Please stay at home, wear a mask, and follow preventive measures.")
+        print("Thank you for using our service.")
+        return False
+    else:
+        print("COVID POSITIVE")
+    return True
+
+def recommend_hospital(location):
+    """Recommends a hospital based on the user's location."""
+    if location == "1":
+        print("You should go to the EY Hospital in CABA.")
+    elif location == "2":
+        print("Go to the nearest hospital or emergency room in Buenos Aires.")
+    elif location == "3":
+        print("Go to Buenos Aires or CABA to the EY Hospital.")
+    else:
+        print("Invalid option. Please select a valid option.")
+
+def ask_mobility():
+    """Asks the user if they can move well or need an ambulance."""
+    print("Can you move well or do you need an ambulance?")
+    print("1. Move well")
+    print("2. Need an ambulance")
+    response = input("Please select an option (1, 2): ").strip()
+    if response == "1":
+        print("Go to the nearest hospital.")
+    elif response == "2":
+        address = input("Please enter your address: ")
+        print(f"Ambulance on the way to {address}.")
+    else:
+        print("Invalid response. Please select a valid option.")
+
+def ask_symptoms():
+    """Asks the user if they have other symptoms."""
+    print("Do you have other symptoms?")
+    print("1. Yes")
+    print("2. No")
+    response = input("Please select an option (1, 2): ").strip()
+    if response == "1":
+        ask_mobility()
+    elif response == "2":
+        print("Keep monitoring your health and take care.")
+    else:
+        print("Invalid response. Please select a valid option.")
+
+def ask_age():
+    """Asks the user for their age and determines the risk factor."""
+    while True:
+        try:
+            age = int(input("Please enter your age: "))
+            if age > 130:
+                print("Please put a valid value.")
+            else:
+                if age <= 30:
+                    print("Risk factor: Low")
+                elif 30 < age <= 60:
+                    print("Risk factor: Medium")
+                else:
+                    print("Risk factor: High")
+                return
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+def ask_temperature():
+    """Asks the user for their temperature and validates it."""
+    while True:
+        try:
+            temperature = float(input("Please enter your body temperature in Celsius: "))
+            if temperature > 45:
+                print("Please put a valid value.")
+            else:
+                return temperature
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+def ask_name():
+    """Asks the user for their name and ensures it contains only letters."""
+    while True:
+        name = input("Please enter your name: ")
+        if name.isalpha():
+            return name
+        else:
+            print("Invalid input. Please enter a name using letters only.")
+
+def main():
+    try:
+        # Ask the user to enter their name
+        name = ask_name()
+        
+        # Greet the user
+        greet_user(name)
+        
+        # Ask the user to enter their age
+        ask_age()
+        
+        # Ask the user to enter their temperature
+        temperature = ask_temperature()
+        if not check_temperature(temperature):
+            return
+        
+        # Ask the user where they live
+        print("Where do you live?")
+        print("1. CABA")
+        print("2. Buenos Aires")
+        print("3. La Plata")
+        location = input("Please select an option (1, 2, 3): ")
+        recommend_hospital(location)
+        
+        # Ask the user if they have other symptoms
+        ask_symptoms()
+        
+    except ValueError as e:
+        print(f"Error: {e}")
+
+# Call the main function
+if __name__ == "__main__":
+    main()
